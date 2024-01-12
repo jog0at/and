@@ -1,0 +1,155 @@
+Media Player
+
+Main Activity
+package com.example.media;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    Button play,pause,fowd,rewd,restart,stop;
+    MediaPlayer media;
+    int f=0;
+    int st=0,et=300*1000,x=5000;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        play=findViewById(R.id.play);
+        pause=findViewById(R.id.pause);
+        stop=findViewById(R.id.stop);
+        rewd=findViewById(R.id.rew);
+        fowd=findViewById(R.id.forw);
+        restart=findViewById(R.id.restart);
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(f==0){
+                    media = MediaPlayer.create(MainActivity.this,R.raw.song);
+                    f=1;
+                }
+                Toast.makeText(MainActivity.this, "Media Started Playing", Toast.LENGTH_SHORT).show();
+
+                media.start();
+
+            }
+        });
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Media Paused", Toast.LENGTH_SHORT).show();
+
+                media.pause();
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Media Stopped", Toast.LENGTH_SHORT).show();
+
+                media.stop();
+            }
+        });
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Media Restarted", Toast.LENGTH_SHORT).show();
+                media.stop();
+                media.seekTo(st);
+                media.start();
+            }
+        });
+        fowd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                media.pause();
+                int y=media.getCurrentPosition();
+                if(y+x<=et) {
+                    media.seekTo(y+x);
+                    media.start();
+                    Toast.makeText(MainActivity.this, "Media Forwarded", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        rewd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                media.pause();
+                int y=media.getCurrentPosition();
+                if(y-x>=st) {
+                    media.seekTo(y-x);
+                    media.start();
+                    Toast.makeText(MainActivity.this, "Media Forwarded", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+    }
+}
+
+
+
+
+xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:text="Media Player"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+         />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play" />
+    <Button
+        android:id="@+id/pause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pause" />
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Restart" />
+    <Button
+        android:id="@+id/forw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forward" />
+    <Button
+        android:id="@+id/rew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rewind" />
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop" />
+
+</LinearLayout>
